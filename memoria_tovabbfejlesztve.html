@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root{
+            --colNr:4;
+            --cell:100px;
+        }
+        #game-board{
+            display: grid;
+            grid-template-columns: repeat(var(--colNr),var(--cell));
+            gap:10px;
+        }
+        .card{
+            width: var(--cell);
+            height: var(--cell);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: blanchedalmond;
+            font-size: 2rem;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+        button{
+            height: 100%;
+            margin: 5px
+        }
+    </style>
+</head>
+<body>
+    <div><input  checked type="radio" name="boardSize" value="4">4</div>
+    <div><input type="radio" name="boardSize" value="8">8</div>
+    <div><input type="radio" name="boardSize" value="10">10</div>
+    <button onclick="read()"> start</button>
+    <button onclick="reset()"> reset</button>
+
+    <div id="game-board"></div>
+    <script src="util.js"></script>
+    <script>
+
+        // document.body.style.setProperty('--colNr',8)
+        console.log(window.innerWidth, window.innerHeight)
+
+
+        function read(){
+        let emojis = emojiArray(size**2/2);
+        const gameBoard=[...emojis,...emojis]
+       // console.log(gameBoard);//dupláztuk
+        gameBoard.sort(()=>Math.random()-0.5)
+        console.log(gameBoard);
+        gameBoard.forEach((item,index)=>{
+            document.getElementById('game-board').innerHTML+=`
+                <div class="card" id="e${index}" onclick="flipCard(this)">?</div>
+            `
+
+        })
+        console.log('klikk');
+        let size=document.querySelector('input[type="radio"]:checked').value
+        console.log(size);
+        let emojiArray=emojiArr(size)
+        console.log(emojiArray);
+        document.body.style.setProperty('--colNr', size)
+
+        }
+
+        let flipped=[]
+        let locked=false
+
+
+        function flipCard(domObj){
+            console.log(flipped);
+            console.log(domObj.id.slice(1));
+            let index=domObj.id.slice(1)          
+            if(flipped.length<2 && domObj.textContent=='?' ){
+                domObj.textContent=gameBoard[index]s
+                flipped.push(index)
+                if(flipped.length==2){
+                    //locked=true
+                    setTimeout(check,1000)
+                }
+            }
+        }
+        function check(){
+           // let i1=flipped[0]
+            //let i2=flipped[1]
+            let [i1,i2]=flipped
+            if(gameBoard[i1]!=gameBoard[i2]){
+                document.getElementById(`e${i1}`).textContent='?'
+                document.getElementById(`e${i2}`).textContent='?'
+            }
+      
+            flipped=[]
+            let count=0
+            document.querySelectorAll('.card').forEach(obj=>{
+                if(obj.textContent!='?') count++
+            })
+            if(count==gameBoard.length) alert('Nyertél!')
+        }
+
+    function reset(){
+            
+
+    }
+    let eNr=129382
+    console.log(String.fromCodePoint(eNr));
+
+    const emojisRange= [129380,129452]
+
+    function emojiArr(nr){
+        let count=nr*nr/2
+        let arr=[]
+        //for
+        //arr.sort(...)
+        return arr.slice(0,count)   
+    }
+    </script>
+</body>
+</html>
